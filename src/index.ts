@@ -1,75 +1,24 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { typeDefs } from './schema';
+import { readFileSync } from 'fs';
 import { PrismaClient } from '@prisma/client';
+import {resolvers} from './resolvers'
+
+const typeDefs = readFileSync('./src/schema.graphql', { encoding: 'utf-8' });
 
 const prisma = new PrismaClient()
 
-interface ApolloServerContext {
+export interface ApolloServerContext {
   prisma: typeof prisma;
 }
 
 const server = new ApolloServer<ApolloServerContext>({
     typeDefs,
-    resolvers: {
-      Query: {
-          pets: async (_, {input}, {prisma}) => {
-              const pets = await prisma.pet.findMany({
-                select: {
-                  id: true,
-                  type: true,
-                  name: true,
-                  owner: true,
-                  createdAt: true
-                }
-              })
-
-              return pets
-          },
-          petsByType: async (_, {type}, {prisma}) => {
-
-            const pets = await prisma.pet.findMany({
-              where: {
-                type
-              },
-              select: {
-                id: true,
-                type: true,
-                name: true,
-                owner: true,
-                createdAt: true
-              }
-            })
-
-            return pets
-          }
-      },
-      Mutation: {
-        addPet: (_, {input}, {prisma}) => {
-            const {name, type} = input
-
-            const createdPet = prisma.pet.create({
-              data: {
-                name,
-                type
-              }
-            })
-
-            return createdPet
-        }
-      },
-      Pet: {
-        img(pet) {
-          return pet.type === 'DOG'
-            ? 'https://placedog.net/300/300'
-            : 'http://placekitten.com/300/300'
-        }
-      },
-  },
+    resolvers
   });
 
 
-  const { url } = await startStandaloneServer<ApolloServerContext>(server, {
+  const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
     context: async ({ req }) => {
       return {
