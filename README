@@ -1,0 +1,12 @@
+# GraphQL playground
+
+Pets CRUD
+
+Things I want to cover/learn:
+
+- [ ] Query
+- [ ] Mutation
+- [ ] Field resolvers
+- [ ] Directives
+- [ ] Error handling
+- [ ] Testing
