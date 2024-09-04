@@ -2,7 +2,7 @@
 
 Pets CRUD
 
-Things I want to cover/learn:
+## Things I want to cover/learn:
 
 - [ ] Query
 - [ ] Mutation
@@ -10,3 +10,7 @@ Things I want to cover/learn:
 - [ ] Directives
 - [ ] Error handling
 - [ ] Testing
+
+## Resources
+
+- [Generating TS types](https://www.apollographql.com/docs/apollo-server/workflow/generate-types/)
