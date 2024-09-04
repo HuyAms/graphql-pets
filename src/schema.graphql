@@ -1,18 +1,30 @@
+"""
+An enumeration of possible pet types.
+"""
 enum PetType {
   CAT
   DOG
 }
 
+"""
+Represents a user in the system.
+"""
 type User {
   id: ID!
   username: String!
   pets: [Pet]!
 }
 
+"""
+Input type for filtering pets by type.
+"""
 input PetsInput {
   type: PetType
 }
 
+"""
+Represents a pet in the system.
+"""
 type Pet {
   id: ID!
   type: PetType!
@@ -22,17 +34,26 @@ type Pet {
   createdAt: Int!
 }
 
+"""
+Root query type for fetching data.
+"""
 type Query {
   user: User!
   pets: [Pet]!
   petsByType(type: PetType!): [Pet]!
 }
 
+"""
+Input type for adding a new pet.
+"""
 input NewPetInput {
   name: String!
   type: PetType!
 }
 
+"""
+Root mutation type for modifying data.
+"""
 type Mutation {
   addPet(input: NewPetInput!): Pet!
 }

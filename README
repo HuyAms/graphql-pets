@@ -6,6 +6,7 @@ Pets CRUD
 
 - [ ] Query
 - [ ] Mutation
+- [ ] Descriptions (docstring)
 - [ ] Field resolvers
 - [ ] Directives
 - [ ] Error handling
