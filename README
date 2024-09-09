@@ -6,10 +6,10 @@ Pets CRUD
 
 - [ ] Query
 - [ ] Mutation
-- [ ] Descriptions (docstring)
+- [x] Descriptions (docstring)
 - [ ] Field resolvers
-- [ ] Directives
-- [ ] Error handling
+- [x] Directives
+- [ ] Structuring mutation response / Error response
 - [ ] Testing
 
 ## Resources

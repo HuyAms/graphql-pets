@@ -1,13 +1,21 @@
 import { QueryResolvers } from '../__generated__/graphql';
 
 const queries: QueryResolvers = {
+  user: async (_, input, {prisma}) => {
+    const {id} = input
+
+    const user = await prisma.user.findUnique({
+      where: {id: id},
+    })
+
+    return user
+  },
   pets: async (_, _input, {prisma}) => {
       const pets = await prisma.pet.findMany({
         select: {
           id: true,
           type: true,
           name: true,
-          owner: true,
           createdAt: true
         }
       })
