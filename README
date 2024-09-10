@@ -4,7 +4,7 @@ Pets CRUD
 
 ## Things I want to cover/learn:
 
-- [ ] Query
+- [x] Query
 - [ ] Mutation
 - [x] Descriptions (docstring)
 - [ ] Field resolvers
@@ -15,3 +15,4 @@ Pets CRUD
 ## Resources
 
 - [Generating TS types](https://www.apollographql.com/docs/apollo-server/workflow/generate-types/)
+- [Resolver chains](https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-chains)

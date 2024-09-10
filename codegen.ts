@@ -9,6 +9,14 @@ const config: CodegenConfig = {
       plugins: ["typescript", "typescript-resolvers"]
     },
   },
+  config: {
+    contextType: "../index#ApolloServerContext",
+    mappers: {
+      User: "../models#UserModel",
+      Pet: "../models#PetModel",
+    },
+    useIndexSignature: true,
+  }
 };
 
 export default config;

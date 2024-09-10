@@ -12,7 +12,7 @@ Represents a user in the system.
 type User {
   id: ID!
   username: String!
-  pets: [Pet]!
+  pets: [Pet!]
   firstName: String @deprecated(reason: "Use 'username' instead.")
 }
 
@@ -30,7 +30,7 @@ type Pet {
   id: ID!
   type: PetType!
   name: String!
-  owner: User!
+  owner: User
   img: String!
   createdAt: String!
 }
