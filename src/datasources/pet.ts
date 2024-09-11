@@ -7,11 +7,16 @@ export class PetDataSource {
       this.prisma = prisma;
     }
 
-    async addPet({name, type}: Prisma.PetCreateInput) {
+    async addPet({name, type, ownerId}: Prisma.PetCreateInput & {ownerId: string}) {
       const createdPet = this.prisma.pet.create({
         data: {
           name,
-          type
+          type,
+          owner: {
+            connect: {
+              id: ownerId
+            }
+          }
         }
       })
 

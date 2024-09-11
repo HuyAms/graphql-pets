@@ -50,11 +50,19 @@ Input type for adding a new pet.
 input NewPetInput {
   name: String!
   type: PetType!
+  ownerId: ID!
 }
 
 """
 Root mutation type for modifying data.
 """
 type Mutation {
-  addPet(input: NewPetInput!): Pet!
+  addPet(input: NewPetInput!): AddPetResponse!
+}
+
+type AddPetResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  pet: Pet
 }

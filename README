@@ -5,10 +5,11 @@ Pets CRUD
 ## Things I want to cover/learn:
 
 - [x] Query
-- [ ] Mutation
+- [x] Mutation
 - [x] Descriptions (docstring)
-- [ ] Field resolvers
+- [x] Field resolvers
 - [x] Directives
+- [] Abstract/Union type
 - [ ] Structuring mutation response / Error response
 - [ ] Testing
 

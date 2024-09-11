@@ -24,11 +24,27 @@ const resolvers: Resolvers = {
     }, 
     Mutation: {
         addPet: async(_, {input}, {dataSources}) => {
-            const {name, type} = input
+            const {name, type, ownerId} = input
+
+            const user = await dataSources.user.getUser(ownerId)
+
+            if (!user) {
+                return {
+                    code: 400,
+                    success: false,
+                    message: `User not found with id: ${ownerId}`,
+                    pet: null
+                }
+            }
     
-            const createdPet = await dataSources.pet.addPet({name, type})
+            const createdPet = await dataSources.pet.addPet({name, type, ownerId})
     
-            return createdPet
+            return {
+                code: 200,
+                success: true,
+                message: 'Pet created successfully',
+                pet: createdPet
+            }
         }
     },
     Pet: {
