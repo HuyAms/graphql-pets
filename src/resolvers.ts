@@ -1,4 +1,6 @@
+import { GraphQLError } from "graphql";
 import { Resolvers } from "./__generated__/graphql";
+import { ApolloServerErrorCode } from '@apollo/server/errors';
 
 const resolvers: Resolvers = { 
     Query: {
@@ -6,6 +8,15 @@ const resolvers: Resolvers = {
             const {id} = input
         
             const user = await dataSources.user.getUser(id)
+
+            if (!user) {
+
+                throw new GraphQLError("User not found", {
+                    extensions: { 
+                        code: ApolloServerErrorCode.BAD_USER_INPUT ,
+                    },
+                  });            
+            }
         
             return user
           },
