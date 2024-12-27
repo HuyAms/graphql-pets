@@ -101,10 +101,10 @@ We can verify if the cache worked by trying to run the same query multiple times
 
 In this project, we use the datasource pattern to fetch data from the database, but caching is not yet implemented!
 
-📚 [Fetching from REST
-](https://www.apollographql.com/docs/apollo-server/data/fetching-rest)
-📚 [Lift-off II: Resolvers
-](https://www.apollographql.com/tutorials/lift-off-part2/03-apollo-restdatasource)
+- 📚 [Fetching from REST
+  ](https://www.apollographql.com/docs/apollo-server/data/fetching-rest)
+- 📚 [Lift-off II: Resolvers
+  ](https://www.apollographql.com/tutorials/lift-off-part2/03-apollo-restdatasource)
 
 </details>
 
@@ -178,5 +178,33 @@ query {
   }
 }
 ```
+
+</details>
+
+<details>
+  <summary>🍿 Data Loader</summary>
+
+---
+
+Use-case: deduplicating and **batching object loads** from a data store. It provides a memoization cache, which avoids loading the same object multiple times during a single GraphQL request.
+
+Suppose we need to fetch the owners of 5 pets, each identified by an owner ID. Notice that `userId-2` is duplicated:
+
+```
+[userId-1, userId-2, userId-2, userId-3, userId-4]
+```
+
+Previously, this required 5 separate requests to fetch the 5 users. With a dataloader, all 5 IDs are passed in, duplicates are removed, and a single batch request is made to fetch the users:
+
+```
+// 1 batch request, with duplicates removed
+[userId-1, userId-2, userId-3, userId-4]
+```
+
+See the implementation in `src/datasources/user.ts`
+
+The dataloader requires API support for batch requests.
+
+📚 [Data loaders with TypeScript & Apollo Server](https://www.apollographql.com/tutorials/dataloaders-typescript)
 
 </details>

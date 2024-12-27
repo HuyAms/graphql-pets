@@ -57,7 +57,7 @@ const resolvers: Resolvers = {
   },
   Pet: {
     async owner(pet, _, { dataSources }) {
-      const owner = await dataSources.user.getUserById(pet.userId);
+      const owner = await dataSources.user.getPetOwner(pet.userId);
 
       return owner;
     },

@@ -31,6 +31,7 @@
   "dependencies": {
     "@apollo/server": "^4.10.5",
     "@prisma/client": "^5.17.0",
+    "dataloader": "^2.2.3",
     "graphql": "^16.9.0",
     "lowdb": "^7.0.1"
   },
