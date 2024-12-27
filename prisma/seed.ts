@@ -35,7 +35,7 @@ async function init() {
 
   const createdUsers = [huyUser, ...moreUsers];
 
-  const numberOfPets = 100;
+  const numberOfPets = 10_000;
   await Promise.all(
     Array.from({ length: numberOfPets }).map(() => {
       const pet = createPet();

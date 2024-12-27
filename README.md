@@ -16,11 +16,15 @@ Create a `.env` file and add the following:
 DATABASE_URL="file:./dev.db"
 ```
 
-Seed the database and run the dev server:
+Seed the database which would generate 10 users and 10k pets:
 
 ```
 npx tsx prisma/seed.ts
+```
 
+Run the dev server:
+
+```
 npm run dev
 ```
 
