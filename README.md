@@ -146,3 +146,37 @@ In this project, we use the datasource pattern to fetch data from the database, 
 ](https://www.apollographql.com/docs/apollo-server/data/fetching-rest)
 
 </details>
+
+<details>
+  <summary>🍿 Resolver Chain</summary>
+
+---
+
+Suppose we want to include the owner for each pet. One approach is to first fetch all the pets and then map through each pet to fetch its owner
+
+```ts
+pets: async (_, _input, { dataSources }) => {
+  const pets = await dataSources.pet.getPets();
+
+  const petsWithOwner = pets.map((pet) => ({
+    ...pet,
+    owner: await dataSources.pet.getOwner(pet.id),
+  }));
+
+  return pets;
+};
+```
+
+However, there is a big issue in this approach. We do the mapping and retriving the user data even when the client query doesn't ask for the `onwer`field.
+
+Thus, instead of putting all the work in the `Query.pets`, we can create another resolver function for `Pet.owner` (see the implementation in `resolvers.ts`)
+
+```
+query {
+  pets: {
+    type
+  }
+}
+```
+
+</details>
