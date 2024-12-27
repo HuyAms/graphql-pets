@@ -2,6 +2,28 @@
 
 Pets CRUD
 
+# Get iot up and running
+
+First clone the repo and install the dependencies:
+
+```
+npm install
+```
+
+Create a `.env` file and add the following:
+
+```
+DATABASE_URL="file:./dev.db"
+```
+
+Seed the database and run the dev server:
+
+```
+npx tsx prisma/seed.ts
+
+npm run dev
+```
+
 # Explanations
 
 <details>
