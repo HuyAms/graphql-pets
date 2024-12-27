@@ -131,45 +131,6 @@ In this project, we use the datasource pattern to fetch data from the database, 
 </details>
 
 <details>
-  <summary>🍿 DataLoader</summary>
-
----
-
-We can use `fetch` (REST API) or directly query the database in the resolver, so why use a `DataSource`?
-
-Let's say our pets resolvers returns 100 pets then we need to make an additional 100 calls to get the owner info. And if they all have the same owner then we are sending 100 calls to fetch a single onwer.
-
-😱 N+1 issue
-
-```
-{
-  pets {
-    # 1
-    id
-    owner {
-      # N calls for N tracks
-      username
-    }
-  }
-}
-```
-
-To solve this issue, the datasource help handle caching, deduplication, and errors while resolving operations.
-
-And because it's a common task to fetch data with REST, Apollo provides a dedicated `DataSource` class just for that: see [@apollo/datasource-rest](https://github.com/apollographql/datasource-rest)
-
-Let's say we fetch users using REST API. Initially,it would stores the request's URL (e.g: `/users/id_1`) before making that request. Then it performs a request and stores the result along with the request's URL in its memoized cache.
-
-If any resolver in the same context attemps the get the same user, it just returns a response from the cache, without making another request.
-
-In this project, we use the datasource pattern to fetch data from the database, but caching is not yet implemented!
-
-📚 [Fetching from REST
-](https://www.apollographql.com/docs/apollo-server/data/fetching-rest)
-
-</details>
-
-<details>
   <summary>🍿 Resolver Chain</summary>
 
 ---
