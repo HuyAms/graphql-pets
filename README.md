@@ -97,7 +97,7 @@ To solve this issue, the datasource help handle caching, deduplication, and erro
 
 And because it's a common task to fetch data with REST, Apollo provides a dedicated `DataSource` class just for that: see [@apollo/datasource-rest](https://github.com/apollographql/datasource-rest)
 
-Let's say we fetch users using REST API. Initially,it would stores the request's URL (e.g: `/users/id_1`) before making that request. Then it performs a request and stores the result along with the request's URL in its memoized cache.
+Initially,it would stores the request's URL (e.g: `/users/id_1`) before making that request. Then it performs a request and stores the result along with the request's URL in its memoized cache.
 
 If any resolver in the same context attemps the get the same user, it just returns a response from the cache, without making another request.
 
@@ -185,17 +185,49 @@ Pet: {
 
 Use-case: deduplicating and **batching object loads** from a data store. It provides a memoization cache, which avoids loading the same object multiple times during a single GraphQL request.
 
-Suppose we need to fetch the owners of 5 pets, each identified by an owner ID. Notice that `userId-2` is duplicated:
+Suppose we need to fetch the owners of 5 pets. Notice that `userId-2` is duplicated:
 
 ```
-[userId-1, userId-2, userId-2, userId-3, userId-4]
+// pets array:
+[
+  {
+    id: 'pet-1',
+    ownerId: 'userId-1'
+  },
+   {
+    id: 'pet-2',
+    ownerId: 'userId-2'
+  },
+   {
+    id: 'pet-3',
+    ownerId: 'userId-2'
+  },
+   {
+    id: 'pet-4',
+    ownerId: 'userId-3'
+  },
+   {
+    id: 'pet-5',
+    ownerId: 'userId-4'
+  },
+]
 ```
 
-Previously, this required 5 separate requests to fetch the 5 users. With a dataloader, all 5 IDs are passed in, duplicates are removed, and a single batch request is made to fetch the users:
+Previously, this required 5 separate requests to fetch the 5 users.
+
+```
+- fetchUser(userId-1)
+- fetchUser(userId-2)
+- fetchUser(userId-2)
+- fetchUser(userId-3)
+- fetchUser(userId-4)
+```
+
+With a dataloader, all 5 IDs are passed in, duplicates are removed, and a single batch request is made to fetch the users:
 
 ```
 // 1 batch request, with duplicates removed
-[userId-1, userId-2, userId-3, userId-4]
+fetchUsers([userId-1, userId-2, userId-3, userId-4])
 ```
 
 See the implementation in `src/datasources/user.ts`
