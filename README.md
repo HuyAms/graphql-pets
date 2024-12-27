@@ -160,7 +160,7 @@ pets: async (_, _input, { dataSources }) => {
 
   const petsWithOwner = pets.map((pet) => ({
     ...pet,
-    owner: await dataSources.pet.getOwner(pet.id),
+    owner: await dataSources.user.getPetOwner(pet.id),
   }));
 
   return pets;
@@ -169,14 +169,24 @@ pets: async (_, _input, { dataSources }) => {
 
 However, there is a big issue in this approach. We do the mapping and retriving the user data even when the client query doesn't ask for the `onwer`field.
 
-Thus, instead of putting all the work in the `Query.pets`, we can create another resolver function for `Pet.owner` (see the implementation in `resolvers.ts`)
-
 ```
 query {
   pets: {
     type
   }
 }
+```
+
+Thus, instead of putting all the work in the `Query.pets`, we can create another resolver function for `Pet.owner` (see the implementation in `resolvers.ts`)
+
+```ts
+Pet: {
+    async owner(pet, _, { dataSources }) {
+      const owner = await dataSources.user.getPetOwner(pet.userId);
+
+      return owner;
+    },
+  }
 ```
 
 </details>
