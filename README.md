@@ -237,3 +237,68 @@ The dataloader requires API support for batch requests.
 📚 [Data loaders with TypeScript & Apollo Server](https://www.apollographql.com/tutorials/dataloaders-typescript)
 
 </details>
+
+<details>
+  <summary>🍿 Pagination</summary>
+
+---
+
+# Offset Pagination
+
+```sql
+SELECT * FROM pets LIMIT 10 OFFSET 50
+```
+
+or with graphql
+
+```
+type Query {
+  pets(limit: Int!, page: Int!): [Pet!]!
+}
+```
+
+Problems:
+
+- performance issue - database scans all 50 rows to skip them
+- slower as offset increases
+- inconsistent results - duplicate records if new items added while paginating
+
+# Cursor Pagination
+
+A cursor is a stable identifier that points to an item on the list. Clients can use this cursor to instruct API to give them a number of results before or after this cursor.
+
+```sql
+SELECT * FROM pets WHERE id > 15 LIMIT 10
+```
+
+or with graphql
+
+```
+type Query {
+  pets(limit: Int!, after: String): [Pet!]!
+}
+```
+
+The concept of "page" does not exist in the cursor-based pagination, thus, we cannot skip ahead to any page and we do not know how many pages there are.
+
+Why it's better:
+
+- Uses primary key (already indexed)
+- Can jump directly to any id in index
+- Consistent performance regardless of page depth
+- No missed/duplicated records
+
+In the cursor pagination, the server always provides what the next cursor is. For example:
+
+```
+{
+  "data": {
+      "pets": {
+        "next": "1000",
+        "items": [{},{},{}]
+      }
+  }
+}
+```
+
+</details>
