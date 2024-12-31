@@ -2,7 +2,7 @@
 
 Pets CRUD
 
-# Get iot up and running
+# Get up and running
 
 First clone the repo and install the dependencies:
 
@@ -268,7 +268,9 @@ Problems:
 A cursor is a stable identifier that points to an item on the list. Clients can use this cursor to instruct API to give them a number of results before or after this cursor.
 
 ```sql
-SELECT * FROM pets WHERE id > 15 LIMIT 10
+SELECT * FROM pets
+WHERE id > 15 -- last id client saw
+LIMIT 10
 ```
 
 or with graphql
@@ -300,5 +302,12 @@ In the cursor pagination, the server always provides what the next cursor is. Fo
   }
 }
 ```
+
+In this project, we implemented cursor-based pagination using the connection pattern for the `pets` query.
+
+- 📚 [GraphQL Pagination](https://graphql.org/learn/pagination/)
+- 📚 [Pagination algorithm - Specifications](https://relay.dev/graphql/connections.htm#sec-Pagination-algorithm)
+- 📚 [Prisma Pagination](https://www.prisma.io/docs/orm/prisma-client/queries/pagination)
+- 📚 [Project - Metaphysics](https://github.com/artsy/metaphysics)
 
 </details>

@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import { Resolvers } from "./__generated__/graphql";
 import { ApolloServerErrorCode } from "@apollo/server/errors";
+import { createConnection } from "./utils/pagination";
 
 const resolvers: Resolvers = {
   Query: {
@@ -19,10 +20,22 @@ const resolvers: Resolvers = {
 
       return user;
     },
-    pets: async (_, _input, { dataSources }) => {
-      const pets = await dataSources.pet.getPets();
+    pets: async (_, { first, after, last, before }, { dataSources }) => {
+      // TODO: might need a functin to covert graphQL to connectionArgs, this case they are the same
+      // i.e: we convert Int id to string cursor
+      const connectionArgs = { first, after, last, before };
 
-      return pets;
+      const { pets: results, count } = await dataSources.pet.getPets(
+        connectionArgs
+      );
+
+      const connection = createConnection({
+        items: results,
+        connectionArgs,
+        totalCount: count,
+      });
+
+      return connection;
     },
     petsByType: async (_, { type }, { dataSources }) => {
       const pets = await dataSources.pet.getPetByType(type);
