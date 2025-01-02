@@ -31,6 +31,12 @@ export class UserDataSource {
     return user;
   }
 
+  async getUsers() {
+    const users = await this.prisma.user.findMany();
+
+    return users;
+  }
+
   // batch version to avoid N+1 problem when getting a owner of pets
   async getPetOwner(userId: string) {
     console.log("Passing user ID to the data loader: ", userId);

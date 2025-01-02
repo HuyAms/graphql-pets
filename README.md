@@ -28,6 +28,14 @@ Run the dev server:
 npm run dev
 ```
 
+To execute authenticated queries or mutations, include Authorization in the request headers.
+
+```
+Authorization: abc
+```
+
+For demonstration purposes, the auth token is hardcoded
+
 # Explanations
 
 <details>
@@ -309,5 +317,27 @@ In this project, we implemented cursor-based pagination using the connection pat
 - 📚 [Pagination algorithm - Specifications](https://relay.dev/graphql/connections.htm#sec-Pagination-algorithm)
 - 📚 [Prisma Pagination](https://www.prisma.io/docs/orm/prisma-client/queries/pagination)
 - 📚 [Project - Metaphysics](https://github.com/artsy/metaphysics)
+
+</details>
+
+<details>
+  <summary>🍿 Authentication</summary>
+
+---
+
+# Overview
+
+**Authentication**: Used to identify a user. To determine if they are who they say they are.
+
+- Provide the user to resolvers
+- Should not be coupled to a resolver
+- Can protect some of Schema and not all of it
+- Can provide field level protection
+
+**Authorization**: Used to determine if a user is allowed to perform certain operations on certain resources.
+
+- Should not be coupled to a resolver
+- Can provide field level custom rules
+- Can authorize some of the schema and not allmn
 
 </details>

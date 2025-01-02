@@ -75,6 +75,7 @@ type Pet implements Node {
 Root query type for fetching data.
 """
 type Query {
+  users: [User!]!
   user(id: String!): User!
   pets(
     # Returns the items in the list that come after the specified cursor.

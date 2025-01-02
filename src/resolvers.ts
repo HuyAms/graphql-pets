@@ -2,10 +2,16 @@ import { GraphQLError } from "graphql";
 import { Resolvers } from "./__generated__/graphql";
 import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { createConnection } from "./utils/pagination";
+import { requireAuthentication } from "./utils/auth";
 
 const resolvers: Resolvers = {
   Query: {
-    user: async (_, input, { dataSources }) => {
+    // authenticated resolver
+    user: async (_, input, context) => {
+      requireAuthentication(context);
+
+      const { dataSources } = context;
+
       const { id } = input;
 
       const user = await dataSources.user.getUserById(id);
@@ -20,6 +26,12 @@ const resolvers: Resolvers = {
 
       return user;
     },
+    users: async (_, _input, { dataSources }) => {
+      const users = await dataSources.user.getUsers();
+
+      return users;
+    },
+
     pets: async (_, { first, after, last, before }, { dataSources }) => {
       // TODO: might need a functin to covert graphQL to connectionArgs, this case they are the same
       // i.e: we convert Int id to string cursor
