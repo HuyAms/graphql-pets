@@ -311,6 +311,8 @@ In the cursor pagination, the server always provides what the next cursor is. Fo
 }
 ```
 
+# Demo
+
 In this project, we implemented cursor-based pagination using the connection pattern for the `pets` query.
 
 - 📚 [GraphQL Pagination](https://graphql.org/learn/pagination/)
@@ -338,6 +340,12 @@ In this project, we implemented cursor-based pagination using the connection pat
 
 - Should not be coupled to a resolver
 - Can provide field level custom rules
-- Can authorize some of the schema and not allmn
+- Can authorize some of the schema and not all
+
+# Demo
+
+In this project, we the `user` query requires authentication.
+
+We extract the access token from the request header, decode the user from the token, and add the user to the context. The presence of user in the context indicates an authenticated request.
 
 </details>
