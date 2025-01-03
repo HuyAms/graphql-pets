@@ -31,6 +31,9 @@ type PetConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # don't add this one by default to all connections
+  # computing this on a large collections can often be very slow
   totalCount: Int
 }
 
