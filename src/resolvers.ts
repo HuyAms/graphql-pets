@@ -3,6 +3,7 @@ import { Resolvers } from "./__generated__/graphql";
 import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { createConnection } from "./utils/pagination";
 import { requireAuthentication } from "./utils/auth";
+import { logger } from "./utils/logger";
 
 const resolvers: Resolvers = {
   Query: {

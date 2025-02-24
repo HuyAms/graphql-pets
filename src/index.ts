@@ -7,6 +7,7 @@ import { UserDataSource } from "./datasources/user";
 import { PetDataSource } from "./datasources/pet";
 import { getUserFromToken } from "./utils/auth";
 import { UserModel } from "./models";
+import { loggerPluggin } from "./utils/logger";
 
 const typeDefs = readFileSync("./src/schema.graphql", { encoding: "utf-8" });
 
@@ -21,6 +22,7 @@ export interface ApolloServerContext {
 const server = new ApolloServer<ApolloServerContext>({
   typeDefs,
   resolvers,
+  plugins: [loggerPluggin],
 });
 
 const { url } = await startStandaloneServer(server, {
