@@ -114,17 +114,17 @@ If we want to share the cached results between multiple context, need to pass th
 Example code:
 
 ```ts
-const { url } = await startStandaloneServer(server, {
-  context: async ({ req }) => {
+const {url} = await startStandaloneServer(server, {
+  context: async ({req}) => {
     const token = getTokenFromRequest(req);
     // We'll take Apollo Server's cache
     // and pass it to each of our data sources
-    const { cache } = server;
+    const {cache} = server;
 
     return {
       dataSources: {
-        moviesAPI: new MoviesAPI({ cache, token }),
-        personalizationAPI: new PersonalizationAPI({ cache }),
+        moviesAPI: new MoviesAPI({cache, token}),
+        personalizationAPI: new PersonalizationAPI({cache}),
       },
     };
   },
@@ -150,10 +150,10 @@ In this project, we use the datasource pattern to fetch data from the database, 
 Suppose we want to include the owner for each pet. One approach is to first fetch all the pets and then map through each pet to fetch its owner
 
 ```ts
-pets: async (_, _input, { dataSources }) => {
+pets: async (_, _input, {dataSources}) => {
   const pets = await dataSources.pet.getPets();
 
-  const petsWithOwner = pets.map((pet) => ({
+  const petsWithOwner = pets.map(pet => ({
     ...pet,
     owner: await dataSources.user.getPetOwner(pet.id),
   }));
@@ -240,7 +240,8 @@ fetchUsers([userId-1, userId-2, userId-3, userId-4])
 
 See the implementation in `src/datasources/user.ts`
 
-The dataloader requires API support for batch requests.
+- The dataloader requires API support for batch requests.
+- The number of objects a data loader receives from a data source should not exceed the number of keys the data loader collected. (For instance, if a data loader requests data for three `users`, it should receive no more than three `users` objects back!)
 
 📚 [Data loaders with TypeScript & Apollo Server](https://www.apollographql.com/tutorials/dataloaders-typescript)
 
