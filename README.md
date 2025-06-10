@@ -241,7 +241,21 @@ fetchUsers([userId-1, userId-2, userId-3, userId-4])
 See the implementation in `src/datasources/user.ts`
 
 - The dataloader requires API support for batch requests.
-- The number of objects a data loader receives from a data source should not exceed the number of keys the data loader collected. (For instance, if a data loader requests data for three `users`, it should receive no more than three `users` objects back!)
+- **DataLoader caching does not replace Redis, Memcache**, or any other shared application-level cache. DataLoader is first and foremost a data loading mechanism, and its cache only serves the purpose of not repeatedly loading the same data in the context of a single request to your Application. To do this, it maintains a simple in-memory memoization cache (more accurately: .load() is a memoized function).
+- The number of objects a data loader receives from a data source should not exceed the number of keys the data loader collected. (For instance, if a data loader requests data for three `users`, it should receive no more than three `users` objects back!). Also, it expects the order would be the same.
+
+```ts
+  private batchProducts = new DataLoader(async (ids) => {
+    const productList = await this.dbConnection.fetchAllKeys(ids);
+    // Dataloader expects you to return a list with the results ordered just like the list in the arguments were
+    // Since the database might return the results in a different order the following code sorts the results accordingly
+    const productIdToProductMap = productList.reduce((mapping, product) => {
+        mapping[product.id] = product;
+        return mapping;
+    }, {});
+    return ids.map((id) => productIdToProductMap[id]);
+  });
+```
 
 📚 [Data loaders with TypeScript & Apollo Server](https://www.apollographql.com/tutorials/dataloaders-typescript)
 
@@ -350,3 +364,44 @@ In this project, we the `user` query requires authentication.
 We extract the access token from the request header, decode the user from the token, and add the user to the context. The presence of user in the context indicates an authenticated request.
 
 </details>
+
+<details>
+  <summary>🍿 Caching</summary>
+
+---
+
+# Overview
+
+# Reddit
+
+</details>
+
+# Tips
+
+## Mutaiton Reseponse
+
+It's recommended to define a `MutationReseponse` interface in the schema, along with a collection of object types that implement the interface (one for each mutations)
+
+```graphql
+interface MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+}
+```
+
+And the implementation
+
+```graphql
+type UpdateUserEmailMutationResponse implements MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  user: User
+}
+```
+
+- `code` is a string that represents the status of data transfer. Think as an HTTP status code
+- `success` is a boolean. This allows a coarse check by the client.
+- `message` is a human-readable that describes the result of the mutation. It is intended to be used in the UI of the product.
+- `user`is added by the implementing type response to return the newly updated object to the client
